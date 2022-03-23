@@ -1,7 +1,9 @@
 # -*- coding: UTF-8 -*-
 
 from cProfile import label
+from inspect import ClassFoundException
 from tkinter.font import Font
+from unittest import result
 import numpy as np 
 import operator
 import matplotlib
@@ -212,6 +214,59 @@ def autoNorm(dataSet):
     return normMat, ranges, minVals
 
 """
+函数说明: 分类器测试函数
+
+Parameters:
+    无
+Returns:
+    无
+Modify:
+    2022-03-23
+"""
+def datingClassTest():
+    # 取所有数据的百分之十
+    hoRatio = 0.10
+    datingDataMat, datingLabels = file2matrix('datingTestSet.txt')
+    normMat, ranges, minVals = autoNorm(datingDataMat)
+    m = normMat.shape[0]
+    # 百分之十的测试数据的个数
+    numTestVecs = int(m*hoRatio)
+    # 分类错误计数
+    errorCount = 0.0
+
+    for i in range(numTestVecs):
+        classifierResult = classify0(normMat[i,:], normMat[numTestVecs:m,:],\
+            datingLabels[numTestVecs:m],3)
+        print ("the classifier came back with: %d\tthe real answer is: %d" %(classifierResult, datingLabels[i]))
+        if (classifierResult != datingLabels[i]): errorCount += 1.0
+    errorRate = errorCount/float(numTestVecs)
+    print ("the total error rate is: %f%%" %(errorRate*100))
+    #return errorRate
+
+"""
+函数说明：约会网站预测函数，通过输入一个男人的三种特征量，预测其分类并输出是否为海伦喜欢的类型。
+
+Parameters:
+    无
+Returns:
+    无
+Modify:
+    2022-03-23
+"""
+def classifyPerson():
+    resultList = ['not at all', 'in small doses', 'in large doses']
+    percentTats = float(input("Percentage of time playing video game: "))
+    ffMiles = float(input("Frequent flier miles earned per year: "))
+    iceCream = float(input("Liters of ice cream consumed per year: "))
+    datingDataMat, datingLabels = file2matrix('datingTestSet.txt')
+    normMat, ranges, minVals = autoNorm(datingDataMat)
+    inArray = np.array([ffMiles, percentTats, iceCream])
+    classifierResult = classify0((inArray - minVals)/ranges, normMat, datingLabels, 3)
+    print("Helen, you will probably like this guy: ", resultList[classifierResult - 1])
+
+
+
+"""
 函数说明：main函数
 
 Parameters:
@@ -222,14 +277,15 @@ Modify:
     2022-03-21
 """
 if __name__ == '__main__':
-  # 打开的文件名
-  filename = "datingTestSet.txt"
-  # 打开并处理数据
-  datingDataMat, datingLabels = file2matrix(filename)
-  normMat, ranges, minVals = autoNorm(datingDataMat)
-  showdata(datingDataMat, datingLabels)
-  print('normMat = ', normMat)
-  print('ranges = ', ranges)
-  print('minVals = ', minVals)
-
-    
+    classifyPerson()
+"""
+    # 打开的文件名
+    filename = "datingTestSet.txt"
+    # 打开并处理数据
+    datingDataMat, datingLabels = file2matrix(filename)
+    normMat, ranges, minVals = autoNorm(datingDataMat)
+    showdata(datingDataMat, datingLabels)
+    print('normMat = ', normMat)
+    print('ranges = ', ranges)
+    print('minVals = ', minVals)  
+""" 
