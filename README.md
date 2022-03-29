@@ -8,4 +8,4 @@ Python code notes during reading the book of "Machine Learning in Action" by Pet
 
 Sample codes in the original book are written in Python 2.x.
 
-The codes in this repository are updated in Python 3.9, can be run without error.
+The codes in this repository are updated in Python 3.9 and can be run without error.
