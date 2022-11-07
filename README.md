@@ -1,5 +1,5 @@
 # MLPractice
-Python code notes during reading the book: "Machine Learning in Action" by Peter Harrington.
+Python coding notes during reading the book: "Machine Learning in Action" by Peter Harrington.
 
 
 
